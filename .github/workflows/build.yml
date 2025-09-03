@@ -70,7 +70,6 @@ jobs:
     - name: Setup CUDA
       uses: Jimver/cuda-toolkit@v0.2.4
       with:
-        cuda: 11.2.2
         sub-packages: '["nvcc", "cudart"]'
       if: steps.cache-cuda.outputs.cache-hit != 'true'
     - name: Setup MSVC
