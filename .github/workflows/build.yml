@@ -8,12 +8,12 @@ jobs:
     steps:
     - name: Cache Boost
       id: cache-boost
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: boost.zip
         key: boost
     - name: Checkout Boost
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
       with:
         repository: boostorg/boost
         ref: dcea40897111fb7c4b92b17455e177d6d2bf735c
@@ -28,7 +28,7 @@ jobs:
       run: zip -r9 boost.zip boost
       if: steps.cache-boost.outputs.cache-hit != 'true'
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: dep-boost
         path: boost.zip
@@ -40,11 +40,11 @@ jobs:
     needs: fetch-boost
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Download Boost
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v5
       with:
         name: dep-boost
     - name: Expand Boost
@@ -89,7 +89,7 @@ jobs:
       working-directory: build
       shell: pwsh
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: EEDI2CUDA-win64
         path: build/EEDI2CUDA.dll
@@ -99,36 +99,3 @@ jobs:
       with:
         files: build/EEDI2CUDA-win64.zip
         draft: true
-  build-linux:
-    runs-on: ubuntu-latest
-    needs: fetch-boost
-    steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Download Boost
-      uses: actions/download-artifact@v2
-      with:
-        name: dep-boost
-    - name: Expand Boost
-      run:  unzip boost.zip
-    - name: Setup CUDA
-      uses: Jimver/cuda-toolkit@v0.2.4
-      with:
-        cuda: 11.2.2
-    - name: Configure
-      run: |
-        mkdir build
-        cmake -S. -Bbuild -DBoost_INCLUDE_DIRS=`pwd` -DCMAKE_BUILD_TYPE=Release
-    - name: Build
-      run: make
-      working-directory: build
-    - name: Strip
-      run: strip -s libEEDI2CUDA.so
-      working-directory: build
-    - name: Upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: EEDI2CUDA-Linux
-        path: build/libEEDI2CUDA.so
