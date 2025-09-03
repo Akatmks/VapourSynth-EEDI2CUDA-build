@@ -74,7 +74,7 @@ jobs:
         sub-packages: '["nvcc", "cudart"]'
       if: steps.cache-cuda.outputs.cache-hit != 'true'
     - name: Setup MSVC
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: ilammy/msvc-dev-cmd@v1.11.0
       with:
         vsversion: 2019
         toolset: 14.25
