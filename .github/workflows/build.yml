@@ -33,7 +33,7 @@ jobs:
         name: dep-boost
         path: boost.zip
   build-win64:
-    runs-on: windows-2019
+    runs-on: windows-2022
     defaults:
       run:
         shell: cmd
