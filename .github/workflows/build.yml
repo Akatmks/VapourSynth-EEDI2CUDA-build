@@ -33,7 +33,7 @@ jobs:
         name: dep-boost
         path: boost.zip
   build-win64:
-    runs-on: windows-2022
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -68,16 +68,14 @@ jobs:
         path: ${{ env.CUDA_PATH }}
         key: ${{ runner.os }}-cuda
     - name: Setup CUDA
-      uses: Jimver/cuda-toolkit@v0.2.4
+      uses: Jimver/cuda-toolkit@v0
       with:
-        cuda: 11.2.2
         sub-packages: '["nvcc", "cudart"]'
       if: steps.cache-cuda.outputs.cache-hit != 'true'
     - name: Setup MSVC
       uses: TheMrMilchmann/setup-msvc-dev@v4
       with:
         arch: x64
-        toolset: 14.25
     - name: Configure
       run: |
         mkdir build
